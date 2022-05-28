@@ -14,12 +14,13 @@ RUN apt-get install -y libatlas-base-dev gfortran
 
 #RUN apt-get install -y ttf-mscorefonts-installer
 RUN apt-get install -y tesseract-ocr-deu
+
 RUN pip install --upgrade pip
+RUN pip install --upgrade setuptools
 #RUN add-apt-repository ppa:alex-p/tesseract-ocr5
 COPY requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
-
 COPY . /app/
 
 ENV PORT=8080

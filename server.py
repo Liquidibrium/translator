@@ -2,13 +2,11 @@
 # coding:utf-8
 
 import os
-import logging
-from logging import Formatter, FileHandler
 from flask import Flask, request, jsonify, render_template, redirect, make_response, url_for
 from werkzeug.utils import secure_filename
 
 from core.image_processor import process_image
-from core.translator import translate
+from core.translator import deep_translate
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -39,8 +37,9 @@ def upload_file():
         path = "./uploads/{}".format(filename)
         print("file was uploaded in {} ".format(path))
         rec_string = process_image(path=path, lang="deu")
-        translated = translate(rec_string, "en")
-        app.logger.info("{}".format(translated))
+        print(rec_string)
+        translated = deep_translate(rec_string)
+        print(translated)
         return jsonify({"output": rec_string, "translated": translated})
 
 
@@ -71,17 +70,6 @@ def not_found_error(error):
 def not_allowed_error(error):
     print(str(error))
 
-
-if not app.debug:
-    file_handler = FileHandler('error.log')
-    file_handler.setFormatter(
-        Formatter('%(asctime)s %(levelname)s: \
-            %(message)s [in %(pathname)s:%(lineno)d]')
-    )
-    app.logger.setLevel(logging.INFO)
-    file_handler.setLevel(logging.INFO)
-    app.logger.addHandler(file_handler)
-    app.logger.info('errors')
 
 if __name__ == '__main__':
     port = os.getenv('PORT')
