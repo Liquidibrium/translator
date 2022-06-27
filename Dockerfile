@@ -20,9 +20,8 @@ RUN pip install --upgrade setuptools
 #RUN add-apt-repository ppa:alex-p/tesseract-ocr5
 COPY requirements.txt requirements.txt
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -q -r requirements.txt
+
 COPY . /app/
 
-ENV PORT=8080
-
-CMD ["python","server.py" ]
+CMD ["python", "server.py"]
